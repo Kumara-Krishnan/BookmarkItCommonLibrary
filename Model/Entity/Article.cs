@@ -18,8 +18,21 @@ namespace BookmarkItCommonLibrary.Model.Entity
         [PrimaryKey]
         public string Id { get; set; }
 
+        public string BookmarkId { get; set; }
+
+        public int PageNumber { get; set; }
+
         public string Content { get; set; }
 
         public string Encoding { get; set; }
+
+        public Article() { }
+
+        public Article(string bookmarkId, int pageNumber)
+        {
+            BookmarkId = bookmarkId;
+            PageNumber = pageNumber;
+            Id = $"{BookmarkId}_{PageNumber}";
+        }
     }
 }

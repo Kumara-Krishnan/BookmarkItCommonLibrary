@@ -23,7 +23,7 @@ namespace BookmarkItCommonLibrary.Data.Handler.Contract
             BookmarkType bookmarkType = BookmarkType.Unknown, SortBy sortBy = SortBy.Newest,
             BookmarkDetailDepth detailDepth = BookmarkDetailDepth.Complete, string domain = default);
 
-        Task<string> GetArticleAsync(string url);
+        Task<IList<string>> GetPaginatedArticleAsync(string url);
 
         Task<string> AddBookmarkAsync(string userName, string url);
 

@@ -115,11 +115,19 @@ namespace BookmarkItCommonLibrary.Data.Handler
             return NetAdapter.PostAsync(GetAbsoluteRequestUrl("get"), requestParams);
         }
 
-        public async Task<string> GetArticleAsync(string url)
+        public async Task<IList<string>> GetPaginatedArticleAsync(string url)
         {
-            await NetAdapter.SendAsync(new HttpRequestMessage(HttpMethod.Head, new Uri(url, UriKind.RelativeOrAbsolute)));
-            ReadSharp.Article article = await ArticleReader.Read(new Uri(url, UriKind.RelativeOrAbsolute)).ConfigureAwait(false);
-            return article.Content;
+            var pages = new List<string>();
+            Article article;
+            do
+            {
+                article = await ArticleReader.Read(new Uri(url, UriKind.RelativeOrAbsolute)).ConfigureAwait(false);
+                pages.Add(article.Content);
+                url = article.NextPage?.AbsolutePath;
+            }
+            while (article != default && url != default);
+
+            return pages;
         }
 
         public Task<string> AddBookmarkAsync(string userName, string url)

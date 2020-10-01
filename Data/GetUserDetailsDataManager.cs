@@ -18,13 +18,13 @@ namespace BookmarkItCommonLibrary.Data
         public async Task GetUserDetailsAsync(GetUserDetailsRequest request, ICallback<GetUserDetailsResponse> callback)
         {
             UserDetails userDetailsFromDB = default;
-            if (request.Type.HasLocalStorage())
+            if (request.HasLocalStorage())
             {
                 userDetailsFromDB = GetUserDetailsFromDB(request);
                 callback.OnSuccessOrFailed(ResponseType.LocalStorage, new GetUserDetailsResponse(userDetailsFromDB), IsValidUserDetailsResponse);
             }
 
-            if (request.Type.HasNetwork())
+            if (request.HasNetwork())
             {
                 var parsedUserDetails = await FetchUserDetailsFromServerAsync(request, userDetailsFromDB).ConfigureAwait(false);
                 callback.OnSuccessOrFailed(ResponseType.Network, new GetUserDetailsResponse(parsedUserDetails?.User), IsValidUserDetailsResponse);

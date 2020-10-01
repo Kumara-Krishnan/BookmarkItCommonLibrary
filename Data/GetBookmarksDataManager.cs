@@ -17,7 +17,7 @@ namespace BookmarkItCommonLibrary.Data
     {
         public async Task GetBookmarksAsync(GetBookmarksRequest request, ICallback<GetBookmarksResponse> callback = null)
         {
-            if (request.Type.HasLocalStorage())
+            if (request.HasLocalStorage())
             {
                 try
                 {
@@ -30,7 +30,7 @@ namespace BookmarkItCommonLibrary.Data
                 }
             }
 
-            if (request.Type.HasNetwork())
+            if (request.HasNetwork())
             {
                 var bookmarksFromServer = await FetchBookmarksFromServerAsync(request).ConfigureAwait(false);
                 callback.OnSuccessOrFailed(ResponseType.Network, new GetBookmarksResponse(bookmarksFromServer), IsValidResponse);
